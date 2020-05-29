@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'post',   # all the user defined app listed down.
     'user',
     'crispy_forms',
-    'taggit',
+    # 'taggit',
 ]
 
 MIDDLEWARE = [
