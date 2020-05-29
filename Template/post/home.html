@@ -1,0 +1,28 @@
+{% extends 'post/base.html' %}
+{% load static %}
+
+{% block content %}
+   <!-- Content
+   ================================================== -->
+{% for post in posts %}
+	   		<article class="entry">
+					<header class="entry-header">
+						<h2 class="entry-title">
+							<a href="{% url 'post-detail' post.id %}" title="">{{ post.title }}</a>
+						</h2>
+						<div class="entry-meta">
+							<ul>
+								<li>{{ post.date_posted }}</li>
+								<span class="meta-sep">&bull;</span>
+								<li><a href="#" title="" rel="category tag">{{ post.category.category }}</a></li>
+								<span class="meta-sep">&bull;</span>
+								<a href="#" title="" rel="category tag"><li>{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</li></a>
+							</ul>
+						</div>
+					</header>
+					<div class="entry-content">
+						<p>{{ post.content }}</p>
+					</div>
+				</article> <!-- end entry -->
+{% endfor %}
+{% endblock content %}

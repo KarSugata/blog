@@ -1,0 +1,8 @@
+<div class="widget widget_categories group">
+    <h3>Categories</h3> 
+        <ul>
+            {% for category in categories %}
+            <li><a href="{% url 'post-category' category.category %}" title="">{{ category }}</a> ({{ categories_count }})</li>	
+            {% endfor %}				
+        </ul>
+</div>

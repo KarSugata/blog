@@ -1,0 +1,60 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% block content %}
+
+<article class="entry">
+
+	<header class="entry-header">
+		<h2 class="entry-title">
+		    {{ post.title }}
+		</h2> 				 
+		<div class="entry-meta">
+			<ul>
+				<li>{{ post.date_posted }}</li>
+					<span class="meta-sep">&bull;</span>							
+						<li>
+							<a href="#" title="" rel="category tag">{{ post.category }}</a> 
+						</li>
+						<span class="meta-sep">&bull;</span>
+			                <li>{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</li>
+			</ul>
+		</div> 			 
+	</header> 
+	
+    <div class="entry-content-media">
+		<div class="post-thumb">
+			<img src="{{ post.img.url }}">
+		</div> 
+	</div>
+	
+    <div class="entry-content">
+		<p>{{ post.content }}
+		</p>
+	</div>
+	
+    <p class="tags">
+  		<span>Tagged in </span>:
+  		    <a href="#">orci</a>, <a href="#">lectus</a>, <a href="#">varius</a>, <a href="#">turpis</a>
+  	</p> 
+  	
+    <ul class="post-nav group">
+        
+        {% if post.get_previous_by_date_posted %}
+  		    <li class="prev"><a rel="prev" href="{% url 'post-detail' post.get_previous_by_date_posted.id %}">
+              <strong>Previous Article</strong>{{ post.get_previous_by_date_posted.title }}</a>
+            </li>
+        {% endif %}
+        
+        {% if post.get_next_by_date_posted %}
+  		    <li class="next"><a rel="next" href="{% url 'post-detail' post.get_next_by_date_posted.id %}">
+              <strong>Next Article</strong>{{ post.get_next_by_date_posted.title }}</a>
+            </li>
+        {% endif %}
+      
+      </ul>
+
+</article>
+
+{% include 'post/comment.html' %}
+
+{% endblock content %}

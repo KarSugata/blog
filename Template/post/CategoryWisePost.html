@@ -1,0 +1,17 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% block content %}
+<section class="page">					
+	<h1>{{ category }}</h1> 												
+	<div class="row archive-list">
+        <div class="twelve columns">	
+			<ul>
+                {% for post in posts %}
+	      		<li><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></li>
+                {% endfor %}			
+			</ul>								
+		</div>
+    </div>
+
+</section>
+{% endblock content %}

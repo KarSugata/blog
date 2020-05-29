@@ -1,0 +1,66 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!-- Comments
+================================================== -->
+    <div id="comments">
+    
+    {% if count > 0 %}
+        
+        {% if count > 1 %}
+        <h3>{{ count }} comments</h3>
+        {% else %}
+        <h3>{{ count }} comment</h3>
+        {% endif %}
+        
+        <!-- commentlist -->
+        <ol class="commentlist">
+        {% for comment in comments %}
+            <li class="depth-1">
+                
+                <div class="avatar">
+                    <img width="50" height="50" class="avatar" src="{% static 'images/user-01.png' %}" alt="">
+                </div>
+                
+                <div class="comment-content">
+	                <div class="comment-info">
+	                    <cite>{{ comment.user.first_name|capfirst }} {{ comment.user.last_name|capfirst }}</cite>
+	                    <div class="comment-meta">
+	                        <time class="comment-time" datetime="2014-07-12T23:05">{{ comment.created }}</time>
+	                        <!--span class="sep">/</span><a class="reply" href="#">Reply</a-->
+	                    </div>
+	                </div>
+
+	                <div class="comment-text">
+	                    <p>
+                            {{ comment.body }}
+                        </p>
+	                </div>
+	            
+                </div>
+
+            </li>
+        {% endfor %}
+        </ol>
+    {% endif %}
+    </div>
+
+{% if request.user.is_authenticated %}
+    <!-- respond -->
+    <div class="respond">
+        <h3>Leave a Comment</h3>
+            <!-- form -->
+                <form name="contactForm" id="contactForm" method="post">
+                {% csrf_token %}
+  				<fieldset>
+                  
+                    <div class="message group">
+                        <label  for="cMessage">Message <span class="required">*</span></label>
+                        <textarea name="body"  id="cMessage" rows="10" cols="50" ></textarea>
+                    </div>
+
+                    <button type="submit" class="submit">Submit</button>
+  				
+                </fieldset>
+  				</form> <!-- Form End -->
+    </div> 
+{% endif %}

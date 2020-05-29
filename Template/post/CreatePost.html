@@ -1,0 +1,46 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!-- respond -->
+    <div class="respond">
+        <h2>Create Blog</h2>
+<!-- form -->
+    <form name="contactForm" id="contactForm" method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+    <fieldset>
+        <div class="group">
+            <!--label for="cName">Title <span class="required">*</span></label-->
+            <!--input name="cName" type="text" id="cName" size="60" value="Give a title for your post."-->
+            {{ form.img|as_crispy_field }}
+        </div>
+        
+        <div class="group">
+            <!--label for="cName">Title <span class="required">*</span></label-->
+            <!--input name="cName" type="text" id="cName" size="60" value="Give a title for your post."-->
+            {{ form.title|as_crispy_field }}
+        </div>
+        
+        <div class="group">
+            <!--label for="cWebsite">Category <span class="required">*</span></label-->
+            <!--input name="cWebsite" type="text" id="cWebsite" size="35" value="Choose the appropiate category"-->
+            <!--input list="category">  
+            <datalist id="category">
+                {% for item in category %} 
+                <option value="{{ item.category }}"/>
+                {% endfor %}    
+            </datalist-->
+            {{ form.category|as_crispy_field }}
+        </div>
+
+        <div class="message group">
+            <!--label for="cMessage">Content <span class="required">*</span></label>
+            <textarea name="cMessage"  id="cMessage" rows="10" cols="80">
+            </textarea-->
+            {{ form.content|as_crispy_field }}
+        </div>
+        <button type="submit" class="submit">Submit</button>
+    </fieldset>
+    </form> <!-- Form End -->
+</div> <!-- Respond End -->
+{% endblock content %}
