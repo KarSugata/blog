@@ -5,29 +5,31 @@ from .forms import SignUpForm, ProfileForm
 
 def SignUpView(request):
     
-    if request.method=='POST':
+    if request.method == 'POST':
         user_form = SignUpForm(data=request.POST)
         profile_form = ProfileForm(data=request.POST)
         
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.refresh_from_db()
-            user.profile.first_name = form.cleaned_data.get('first_name')
-            user.profile.last_name = form.cleaned_data.get('last_name')
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user.profile.email = form.cleaned_data.get('email')
-            user.save()
-            print(f'Password: {password} and Username: {username} and email: {email}')
-            user = authenticate(username=username, password=password)
+            new_user = user_form.save(commit=False)
+            new_profile = profile_form.save(commit=False)
+            
+            new_profile.user = new_user
+            userName = new_user.username
+            password = new_profile.password1
+            new_user.save(commit=True)
+            new_profile.save(commit=True)
+            user = authenticate(username = userName, password = password)
             login(request, user)
             return redirect('blog-home')
     else:
+        user_form = SignUpForm()
+        profile_form = ProfileForm()
     
-        form = SignUpForm()
+    context = {
+        'user_form': user_form, 
+        'profile_form': profile_form,
+    }
 
-    context = {'form':form}
-    
     return render(request, 'user/signup.html', context=context)
 
 def loginView(request):
