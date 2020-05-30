@@ -9,10 +9,14 @@ def SignUpView(request):
         form = SignUpForm(request.POST)
         
         if form.is_valid():
-            form.save()
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.first_name = form.cleaned_data.get('first_name')
+            user.profile.last_name = form.cleaned_data.get('last_name')
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            email = form.cleaned_data.get('email')
+            user.profile.email = form.cleaned_data.get('email')
+            user.save()
             print(f'Password: {password} and Username: {username} and email: {email}')
             user = authenticate(username=username, password=password)
             login(request, user)
