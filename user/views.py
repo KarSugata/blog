@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileForm
 # Create your views here.
 
 def SignUpView(request):
     
     if request.method=='POST':
-        form = SignUpForm(request.POST)
+        user_form = SignUpForm(data=request.POST)
+        profile_form = ProfileForm(data=request.POST)
         
-        if form.is_valid():
-            user = form.save()
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
             user.refresh_from_db()
             user.profile.first_name = form.cleaned_data.get('first_name')
             user.profile.last_name = form.cleaned_data.get('last_name')
