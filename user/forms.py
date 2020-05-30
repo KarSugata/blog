@@ -5,11 +5,11 @@ from django import forms
 
 
 class SignUpForm(UserCreationForm):
-    class meta:
+    class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
 
 class ProfileForm(forms.ModelForm):
-    class meta:
+    class Meta:
         model = Profile
         fields = ['user', 'email']
