@@ -21,7 +21,7 @@ def SignUpView(request):
             login(request, user)
             return redirect('blog-home')
     else:
-        
+    
         form = SignUpForm()
 
     context = {'form':form}
