@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     # img = 
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.CharField(blank=True, max_length=500)
