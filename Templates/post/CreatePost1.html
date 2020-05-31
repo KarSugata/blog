@@ -78,6 +78,7 @@
     <!-- Content
    ================================================== -->
 <div id="content-wrap">
+{% include 'post/messages.html' %}
 <div class="row">
 <div id="main" class="eight columns">
 <!-- respond -->
@@ -90,7 +91,7 @@
         
         <div class="group">
             <label for="cName">Title <span class="required"> *</span></label>
-            <input name="title" type="text" id="title" size="80" value="">
+            <input name="title" type="text" id="title" size="80" class="title" value="">
         </div>
         
         <div class="group">
@@ -99,13 +100,13 @@
 
         <div class="message group">
             <label for="cMessage">Content <span class="required">*</span></label>
-            <textarea name="content"  id="content" rows="10" cols="80">
+            <textarea name="content"  id="content" class="content" rows="10" cols="80">
             </textarea>
         </div>
 
         <div class="group">
             <label for="cName">Add an appropiate image for your post. <span class="required"> *</span></label>
-            <!--input type="file" id="img" name="img" accept="image/*"-->{{ form.img|as_crispy_field }}      
+            {{ form.img|as_crispy_field }}      
          </div>
         
         <button type="submit" class="submit">Submit</button>

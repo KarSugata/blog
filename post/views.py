@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Post, Category, Comment
 from django.contrib.auth.models import User
 from .forms import CreatePost, CommentForm
-
+from django.contrib import messages
 # Create your views here.
 
 def home(request): # Home page of the website.
@@ -62,22 +62,24 @@ def postdetail(request,pk): # Single Post view.
 def createpost(request,username):
     
     if request.method == 'POST':
-        
         form = CreatePost(request.POST, request.FILES)
-        title = request.POST['title']
-        content = request.POST['content']
-        # img = request.POST['img']
-        print(request.POST)
-        # print(form.cleaned_data)
         if form.is_valid():
-           
+            
+            new_form = form.save(commit=False)
             user = User.objects.get(username=username)
-            form.instance.author = user
-            form.instance.title = title
-            form.instance.content = content
-            # form.instance.img = img
-            form.save(commit=True)
-            return redirect('blog-home')
+            
+            if user.post_set.filter(title=new_form.title).exists():
+                messages.error(request, 'Blog already present with the same title')
+            
+            else:
+                new_form.author = user
+                form.save(commit=True)
+                messages.success(request, 'Blog posted successfully')
+                return redirect('blog-home')
+        
+        else:
+            messages.error(request, 'Form not valid! Try again')
+    
     else:
         
         form = CreatePost()

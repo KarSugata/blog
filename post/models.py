@@ -30,7 +30,6 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  # one post can have only one category whereas under one category there can be multiple post.
     img = models.ImageField(default='default.jpg', upload_to='post')
     # tag = to store important tags related to the post
-    # date_updated = when the blog is updated
 
     def __str__(self):
         return self.title
