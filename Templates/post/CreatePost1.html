@@ -78,7 +78,7 @@
     <!-- Content
    ================================================== -->
 <div id="content-wrap">
-{% include 'post/messages.html' %}
+   
 <div class="row">
 <div id="main" class="eight columns">
 <!-- respond -->
@@ -109,8 +109,13 @@
             {{ form.img|as_crispy_field }}      
          </div>
         
-        <button type="submit" class="submit">Submit</button>
-    
+        <button type="submit" class="submit" onclick="messageFunction()">Submit</button>
+        <script>
+               function messageFunction(){
+                  console.log({{messages}})
+                 // alert(messickages);
+               }
+         </script>
     </fieldset>
     </form> <!-- Form End -->
 </div> <!-- Respond End -->

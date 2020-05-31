@@ -9,12 +9,12 @@ def home(request): # Home page of the website.
     post = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
     categories = Category.objects.all()
     
-    # categories_count = 0
-    '''for item in categories:
-        categories_count['item'] = ''
-    for item in post:'''
-    # categories_count = Post.objects.filter(category=categories).count()
-    
+    '''categories_count = []
+    i = 1
+    for item in categories.count():
+        categories_count[item] = Categories.objects.filter(id=i).count()
+        i += 1
+    '''
     context = {
         'posts':post,
         # 'count' : categories_count,
@@ -98,3 +98,4 @@ def category(request, category_name):
         'category': category_name
     }
     return render(request,'post/CategoryWisePost.html',context=context)
+
