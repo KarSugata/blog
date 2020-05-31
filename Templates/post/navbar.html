@@ -1,0 +1,56 @@
+<!--Header-->
+    <header id="top">
+ 
+        <div class="row">
+ 
+            <div class="header-content twelve columns">
+ 
+               <h1 id="logo-text"><a href="{% url 'blog-home' %}" title="">Tech Blog</a></h1>
+               <p id="intro">Welcome geeks to the world of techies!</p>
+ 
+             </div>			
+ 
+        </div>
+ 
+        <nav id="nav-wrap"> 
+ 
+            <a class="mobile-btn" href="#nav-wrap" title="Show navigation">Show Menu</a>
+            <a class="mobile-btn" href="#" title="Hide navigation">Hide Menu</a>
+ 
+            <div class="row">    		            
+ 
+                  <ul id="nav" class="nav">
+                     
+                     <li class="current">
+                        <a href="{% url 'blog-home' %}">Home</a>
+                     </li>
+                     
+                     <li><a href="#">About Us</a></li>
+                  
+                     {% if request.user.is_authenticated %} 
+                        <li class="has-children">
+                            <a href="#">
+                                {{ request.user.first_name|capfirst }}
+                            </a>
+                           
+                            <ul>
+                            <li><a href="#">My Post</a></li>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="{% url 'logout' %}">Log Out</a></li>
+                            </ul>
+                        
+                        </li>
+                     {% else %}
+                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                     {% endif %}        
+                        
+                     {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'create-post' request.user.username %}">Create Blog</a></li>
+                     {% endif %}      
+                  
+                  </ul> <!-- end #nav -->			   	 
+            
+            </div> 
+      </nav> <!-- end #nav-wrap --> 	     
+    </header> <!-- Header End -->

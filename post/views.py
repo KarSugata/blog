@@ -9,17 +9,9 @@ def home(request): # Home page of the website.
     post = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
     categories = Category.objects.all()
     
-    '''categories_count = []
-    i = 1
-    for item in categories.count():
-        categories_count[item] = Categories.objects.filter(id=i).count()
-        i += 1
-    '''
     context = {
         'posts':post,
-        # 'count' : categories_count,
         'categories': categories,
-        # 'categories_count': categories_count
     }
     
     return render(request,'post/home.html',context=context)
@@ -36,16 +28,13 @@ def postdetail(request,pk): # Single Post view.
             form = CommentForm(data=request.POST)
             
             if form.is_valid():
-                print("Yes valid")
-                # form.instance.body = content
                 new_comment = form.save(commit=False)
-                print(new_comment)
                 new_comment.post = post
                 new_comment.user = request.user
                 new_comment.save()
             
             else:
-                print(form.errors)
+                pass
         else:
             form = CommentForm()
 
@@ -88,7 +77,7 @@ def createpost(request,username):
         'category': category,
     }
     
-    return render(request, 'post/CreatePost1.html',context=context)
+    return render(request, 'post/CreatePost.html',context=context)
 
 def category(request, category_name):
     post_category = Category.objects.get(category=category_name)
