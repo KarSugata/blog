@@ -43,7 +43,6 @@ def postdetail(request,pk): # Single Post view.
                 new_comment.post = post
                 new_comment.user = request.user
                 new_comment.save()
-                return redirect('blog-home')
             
             else:
                 print(form.errors)
@@ -68,7 +67,7 @@ def createpost(request,username):
             new_form = form.save(commit=False)
             user = User.objects.get(username=username)
             
-            if user.post_set.filter(title=new_form.title).exists():
+            if user.post_set.filter(title=new_form.title).exists(): # if the post exist with the same title under the same author do not add the post.
                 messages.error(request, 'Blog already present with the same title')
             
             else:
@@ -99,4 +98,3 @@ def category(request, category_name):
         'category': category_name
     }
     return render(request,'post/CategoryWisePost.html',context=context)
-
