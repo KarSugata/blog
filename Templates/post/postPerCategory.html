@@ -1,0 +1,33 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <section class="page">					
+
+					<h2>Hey {{ request.user.first_name|capfirst }}!</h2> 
+					
+					<p class="lead">Lorem ipsum Nisi enim est proident est magna occaecat 
+                        dolore proident eu ex sunt consectetur consectetur dolore enim nisi
+                        exercitation adipisicing magna culpa commodo deserunt ut do Ut occaecat. 
+                        Lorem ipsum Veniam consequat quis.
+                    </p>					
+					
+					<div class="row archive-list">
+
+						<div class="twelve columns">
+
+							<h4>Last 10 Posts.</h4>	
+
+				      	<ul>
+                          {% for post in user_post %}
+				      		<li><a href="#">{{ post.title }}</a></li>
+							<a class="button" href="#">Delete</a>
+							<a class="button" href="#">Update</a>
+                          {% endfor %}
+				      	</ul>								
+
+						</div>
+
+					</div> <!-- end row -->			      	
+				</section> <!-- End page -->
+{% endblock %}

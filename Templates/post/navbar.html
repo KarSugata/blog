@@ -34,7 +34,7 @@
                             </a>
                            
                             <ul>
-                            <li><a href="#">My Post</a></li>
+                            <li><a href="{% url 'post-per-user' request.user.username %}">My Post</a></li>
                             <li><a href="#">Profile</a></li>
                             <li><a href="{% url 'logout' %}">Log Out</a></li>
                             </ul>

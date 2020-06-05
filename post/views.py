@@ -88,3 +88,12 @@ def category(request, category_name):
     }
     return render(request,'post/CategoryWisePost.html',context=context)
 
+def postPerUser(request, username):
+    user = User.objects.get(username=username)
+    user_post = user.post_set.all()[:10]
+    
+    context = {
+        'user_post' :user_post
+    }
+    
+    return render(request, 'post/postPerCategory.html', context=context)
