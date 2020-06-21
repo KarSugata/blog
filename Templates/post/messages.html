@@ -1,5 +1,10 @@
 {% if messages %}
     {% for message in messages %}
-        {{ message|safe }}
+    <div id="message-group">
+        <span id="message">
+            {{ message }}
+        </span>
+    </div>    
     {% endfor %}
 {% endif %}
+<script src="{% static 'js/message.js' %}"></script>

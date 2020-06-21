@@ -89,8 +89,8 @@ def category(request, category_name):
     return render(request,'post/CategoryWisePost.html',context=context)
 
 def postPerUser(request, username):
-    user = User.objects.get(username=username)
-    user_post = user.post_set.all()[:10]
+    user = User.objects.get(username=username) # get all the post specific to th user.
+    user_post = user.post_set.all()[:10] # display last 10 posts.
     
     context = {
         'user_post' :user_post
