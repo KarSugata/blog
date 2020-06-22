@@ -1,0 +1,24 @@
+{% if posts.has_other_pages %}
+    <nav class="pagination add-bottom">
+        {% if posts.has_previous %}
+            <span class="page-numbers prev inactive">
+                <a href="?page={{ posts.previous_page_number }}">Prev</a>
+            </span>
+        {% endif %}
+            
+        {% for i in posts.paginator.page_range %}
+            {% if posts.number == i %}
+   	            <span class="page-numbers current">{{ i }}</span>
+            {% else %}
+                <a href="?page={{ i }}"" class="page-numbers">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+            
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}" class="page-numbers next">Next</a>
+            {% endif %}
+	
+    </nav>
+    
+<hr>
+{% endif %}

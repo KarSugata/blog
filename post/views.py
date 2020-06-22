@@ -3,14 +3,25 @@ from .models import Post, Category, Comment
 from django.contrib.auth.models import User
 from .forms import CreatePost, CommentForm
 from django.contrib import messages
+from django.core.paginator import Paginator, Page, PageNotAnInteger, EmptyPage
 # Create your views here.
 
 def home(request): # Home page of the website.
-    post = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
+    post_list = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
     categories = Category.objects.all()
     
+    page = request.GET.get('page', 1)
+    paginator = Paginator(post_list, 4)
+    
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    
     context = {
-        'posts':post,
+        'posts':posts,
         'categories': categories,
     }
     
@@ -97,3 +108,4 @@ def postPerUser(request, username):
     }
     
     return render(request, 'post/postPerCategory.html', context=context)
+

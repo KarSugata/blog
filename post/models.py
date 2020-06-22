@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+from PIL import Image
 
 # Create your models here.
 
@@ -22,7 +22,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     
-    title = models.CharField(max_length=20) # title of the post
+    title = models.CharField(max_length=60) # title of the post
     content = models.TextField()  # content of the post
     date_posted = models.DateTimeField(auto_now_add=True)  # when the post is created
     date_modified = models.DateTimeField(auto_now=True) # will store the date every time the post is updated and saved.
@@ -33,6 +33,16 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self): # method to crop the image automatically while saving.
+        super().save()
+
+        image = Image.open(self.img.path)
+
+        if image.height > 280 or image.width > 720:
+            output_size = (280, 720)
+            image.thumbnail(output_size)
+            image.save(self.img.path)
 
 class Comment(models.Model):
     

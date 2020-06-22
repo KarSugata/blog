@@ -21,8 +21,10 @@
 						</div>
 					</header>
 					<div class="entry-content">
+						{% if post.content.length >  %}{% endif %}
 						<p>{{ post.content }}</p>
 					</div>
 				</article> <!-- end entry -->
 {% endfor %}
+{% include 'post/pagination.html' %}
 {% endblock content %}
