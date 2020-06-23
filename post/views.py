@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404, reverse, HttpResponseRedirect
 from .models import Post, Category, Comment
 from django.contrib.auth.models import User
 from .forms import CreatePost, CommentForm
@@ -10,7 +10,8 @@ from taggit.models import Tag
 def home(request): # Home page of the website.
     post_list = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
     categories = Category.objects.all()
-    # tags = 
+    tags = Post.tag.most_common()[:6]
+    
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 3)
     
@@ -24,17 +25,18 @@ def home(request): # Home page of the website.
     context = {
         'posts':posts,
         'categories': categories,
+        'tags':tags,
     }
     
     return render(request,'post/home.html',context=context)
 
-def postdetail(request,pk): # Single Post view.
+def postdetail(request, pk): # Single Post view.
     
     post = Post.objects.get(id=pk)
     comment = post.comments.all()
     comment_count = comment.count()
     tags = post.tag.all() # retrive all the tags releated to a particular post.
-
+   
     if request.user.is_authenticated: # Adding the comment adding functionality.
 
         if request.method == 'POST':
@@ -45,6 +47,7 @@ def postdetail(request,pk): # Single Post view.
                 new_comment.post = post
                 new_comment.user = request.user
                 new_comment.save()
+                return HttpResponseRedirect(reverse('post-detail', args=[pk]))
             
             else:
                 pass
@@ -56,7 +59,7 @@ def postdetail(request,pk): # Single Post view.
         'post' : post,
         'comments': comment,
         'count': comment_count,
-        'tags': tags
+        'tags': tags,
     }
 
     return render(request,'post/postdetail.html', context=context)
@@ -94,12 +97,23 @@ def createpost(request,username):
     
     return render(request, 'post/CreatePost.html',context=context)
 
-def category(request, category_name):
-    post_category = Category.objects.get(category=category_name)
-    post = post_category.post_set.all()
+def category(request, category_name=None, tag_slug=None):
+    
+    if category_name: # if the view is handling all the post under a particular category.
+        post_category = Category.objects.get(category=category_name)
+        post = post_category.post_set.all()
+    
+    tag = None
+    
+    if tag_slug: # if the view is handling all the post under a particular tag.
+        post = Post.objects.all() # retrive all the post.
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post = post.filter(tag__in=[tag]) # retrive all the post under a particular tag.
+        
     context = {
         'posts' : post,
-        'category': category_name
+        'category': category_name,
+        'tag' : tag,
     }
     return render(request,'post/CategoryWisePost.html',context=context)
 

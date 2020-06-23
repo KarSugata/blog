@@ -1,11 +1,11 @@
 <div class="widget widget_tags">
     <h3>Post Tags.</h3>
     <div class="tagcloud group">
-    {% for tag in posts %}
+    {% for tag in tags %}
         
-        {% for i in tag.tag.all %}
-        <a href="#">{{ i.name }}</a>
-        {% endfor %}
+        
+            <a href="{% url 'post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+     
     
     {% endfor %}
     </div>

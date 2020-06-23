@@ -6,13 +6,16 @@ from .forms import SignUpForm, ProfileForm
 def SignUpView(request):
     
     if request.method == 'POST':
+        
         user_form = SignUpForm(data=request.POST)
         profile_form = ProfileForm(data=request.POST)
         print("hello1")
+        
         if user_form.is_valid() and profile_form.is_valid():
             new_user = user_form.save(commit=False)
             new_profile = profile_form.save(commit=False)
             print("hello2")
+            
             new_profile.user = new_user
             userName = new_user.username
             password = new_user.password1
@@ -23,7 +26,9 @@ def SignUpView(request):
             print(f'user: {user}')
             login(request, user)
             return redirect('blog-home')
+    
     else:
+        
         user_form = SignUpForm()
         profile_form = ProfileForm()
     
@@ -48,7 +53,7 @@ def loginView(request):
         else :
             print("Not allowed")
 
-    return render(request, 'user/login.html',)
+    return render(request, 'user/login.html')
 
 def logoutView(request):
     logout(request)

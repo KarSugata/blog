@@ -30,7 +30,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)  # Referring the django's inbuilt User model.
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  # one post can have only one category whereas under one category there can be multiple post.
     img = models.ImageField(default='default.jpg', upload_to='post')
-    tag = TaggableManager(blank=True)
+    tag = TaggableManager(blank=True) # field to add the tags. This is many-to-many field.
 
     def __str__(self):
         return self.title
