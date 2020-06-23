@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from PIL import Image
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -29,7 +30,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)  # Referring the django's inbuilt User model.
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  # one post can have only one category whereas under one category there can be multiple post.
     img = models.ImageField(default='default.jpg', upload_to='post')
-    # tag = to store important tags related to the post
+    tag = TaggableManager(blank=True)
 
     def __str__(self):
         return self.title

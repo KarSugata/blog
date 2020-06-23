@@ -21,8 +21,11 @@
 						</div>
 					</header>
 					<div class="entry-content">
-						{% if post.content.length >  %}{% endif %}
-						<p>{{ post.content }}</p>
+						{% if post.content|wordcount > 95 %}
+							<p>{{ post.content|truncatewords:95 }}</p>
+						{% else %}
+							<p>{{ post.content }}</p>
+						{% endif %}
 					</div>
 				</article> <!-- end entry -->
 {% endfor %}

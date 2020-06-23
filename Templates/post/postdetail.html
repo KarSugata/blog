@@ -34,7 +34,9 @@
 	
     <p class="tags">
   		<span>Tagged in </span>:
-  		    <a href="#">orci</a>, <a href="#">lectus</a>, <a href="#">varius</a>, <a href="#">turpis</a>
+		  	{% for tag in tags %}
+  		    	<a href="#">{{ tag.name }}</a>&nbsp, 
+			{% endfor %}
   	</p> 
   	
     <ul class="post-nav group">

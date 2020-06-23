@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .forms import CreatePost, CommentForm
 from django.contrib import messages
 from django.core.paginator import Paginator, Page, PageNotAnInteger, EmptyPage
+from taggit.models import Tag
 # Create your views here.
 
 def home(request): # Home page of the website.
@@ -11,7 +12,7 @@ def home(request): # Home page of the website.
     categories = Category.objects.all()
     
     page = request.GET.get('page', 1)
-    paginator = Paginator(post_list, 4)
+    paginator = Paginator(post_list, 3)
     
     try:
         posts = paginator.page(page)
@@ -32,8 +33,9 @@ def postdetail(request,pk): # Single Post view.
     post = Post.objects.get(id=pk)
     comment = post.comments.all()
     comment_count = comment.count()
-    
-    if request.user.is_authenticated:
+    tags = post.tag.all() # retrive all the tags releated to a particular post.
+
+    if request.user.is_authenticated: # Adding the comment adding functionality.
 
         if request.method == 'POST':
             form = CommentForm(data=request.POST)
@@ -54,6 +56,7 @@ def postdetail(request,pk): # Single Post view.
         'post' : post,
         'comments': comment,
         'count': comment_count,
+        'tags': tags
     }
 
     return render(request,'post/postdetail.html', context=context)
@@ -72,7 +75,8 @@ def createpost(request,username):
             
             else:
                 new_form.author = user
-                form.save(commit=True)
+                new_form.save()
+                form.save_m2m() # this will help to save the tags in the form.
                 messages.success(request, 'Blog posted successfully')
                 return redirect('blog-home')
         
@@ -100,8 +104,19 @@ def category(request, category_name):
     return render(request,'post/CategoryWisePost.html',context=context)
 
 def postPerUser(request, username):
+    # print(f'Request Details: {request}')
     user = User.objects.get(username=username) # get all the post specific to th user.
-    user_post = user.post_set.all()[:10] # display last 10 posts.
+    user_postList = user.post_set.all() # display last 10 posts.
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(user_postList, 5)
+    
+    try:
+        user_post = paginator.page(page)
+    except PageNotAnInteger:
+        user_post = paginator.page(1)
+    except EmptyPage:
+        user_post = paginator.page(paginator.num_pages)
     
     context = {
         'user_post' :user_post
@@ -109,3 +124,15 @@ def postPerUser(request, username):
     
     return render(request, 'post/postPerCategory.html', context=context)
 
+def deletePost(request, pk):
+    post = Post.objects.get(id=pk)
+    
+    if request.method == 'POST':
+            post.delete()
+            return redirect('blog-home')
+    
+    context = {
+        'post':post
+    }
+
+    return render(request, 'blog/DeletePost.html',context=context)

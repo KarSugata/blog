@@ -4,30 +4,63 @@
 {% block content %}
     <section class="page">					
 
-					<h2>Hey {{ request.user.first_name|capfirst }}!</h2> 
+		<h2>Hey {{ request.user.first_name|capfirst }}!</h2> 
 					
-					<p class="lead">Lorem ipsum Nisi enim est proident est magna occaecat 
-                        dolore proident eu ex sunt consectetur consectetur dolore enim nisi
-                        exercitation adipisicing magna culpa commodo deserunt ut do Ut occaecat. 
-                        Lorem ipsum Veniam consequat quis.
-                    </p>					
-					
-					<div class="row archive-list">
+		<p class="lead">Lorem ipsum Nisi enim est proident est magna occaecat 
+        dolore proident eu ex sunt consectetur consectetur dolore enim nisi
+        exercitation adipisicing magna culpa commodo deserunt ut do Ut occaecat. 
+        Lorem ipsum Veniam consequat quis.
+        </p>					
+	
+		<div class="row archive-list">
+			<div class="twelve columns">
+				<h4>Posts you have made.</h4>	
+				<ul>
+                	{% for post in user_post %}
+				      	<li><a href="#">{{ post.title }}</a></li>
+						<a class="button" id='delete-button' href="#">Delete</a>
+						<a class="button" href="#">Update</a>
+                    {% endfor %}
+				</ul>								
+			</div>
+		</div> <!-- end row -->			      	
+	
+	</section> <!-- End page -->
 
-						<div class="twelve columns">
+{% if user_post.has_other_pages %}
+    <nav class="pagination add-bottom">
+        {% if user_post.has_previous %}
+            <span class="page-numbers prev inactive">
+                <a href="?page={{ user_post.previous_page_number }}">Prev</a>
+            </span>
+        {% endif %}
+            
+        {% for i in user_post.paginator.page_range %}
+            {% if user_post.number == i %}
+   	            <span class="page-numbers current">{{ i }}</span>
+            {% else %}
+                <a href="?page={{ i }}"" class="page-numbers">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+            
+            {% if user_post.has_next %}
+                <a href="?page={{ user_post.next_page_number }}" class="page-numbers next">Next</a>
+            {% endif %}
+	
+    </nav>
+    
+    <hr>
+{% endif %}
 
-							<h4>Last 10 Posts.</h4>	
+<script>
+	document.getElementById('delete-button').addEventListener('click', deletePost);
+	function deletePost(){
+		const val = window.confirm("Do you want to delete the post?");
+		if (val==true)
+			console.log('Deleted');
+		else
+			console.log('Not deleted');
+	}
+</script>
 
-				      	<ul>
-                          {% for post in user_post %}
-				      		<li><a href="#">{{ post.title }}</a></li>
-							<a class="button" href="#">Delete</a>
-							<a class="button" href="#">Update</a>
-                          {% endfor %}
-				      	</ul>								
-
-						</div>
-
-					</div> <!-- end row -->			      	
-				</section> <!-- End page -->
 {% endblock %}

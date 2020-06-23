@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'post',   # all the user defined app listed down.
     'user',
-    'crispy_forms',
-    # 'taggit',
+    'crispy_forms', # installed 3rd party packages for development.
+    'taggit',
+    'hitcount',
 ]
 
 MIDDLEWARE = [
