@@ -10,7 +10,7 @@ from taggit.models import Tag
 def home(request): # Home page of the website.
     post_list = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
     categories = Category.objects.all()
-    
+    # tags = 
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 3)
     
