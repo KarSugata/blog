@@ -136,3 +136,4 @@ def deletePost(request, pk):
     }
 
     return render(request, 'blog/DeletePost.html',context=context)
+
