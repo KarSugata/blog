@@ -32,14 +32,16 @@
 		</p>
 	</div>
 	
-    <p class="tags">
-  		<span>Tagged in </span>:
-		  	{% for tag in tags %}
-  		    	<a href="#">{{ tag.name }}</a>&nbsp, 
-			{% endfor %}
-  	</p> 
-  	
-    <ul class="post-nav group">
+	{% if tags %}
+		<p class="tags">
+			<span>Tagged in </span>:
+				{% for tag in tags %}
+					<a href="#">{{ tag.name }}</a>&nbsp, 
+				{% endfor %}
+		</p> 
+  	{% endif %}
+    
+	<ul class="post-nav group">
         
         {% if post.get_previous_by_date_posted %}
   		    <li class="prev"><a rel="prev" href="{% url 'post-detail' post.get_previous_by_date_posted.id %}">

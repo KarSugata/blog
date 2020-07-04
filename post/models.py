@@ -39,11 +39,8 @@ class Post(models.Model):
         super().save()
 
         image = Image.open(self.img.path)
-
-        if image.height > 280 or image.width > 720:
-            output_size = (280, 720)
-            image.thumbnail(output_size)
-            image.save(self.img.path)
+        image = image.resize((600,400))
+        image.save(self.img.path)
 
 class Comment(models.Model):
     
