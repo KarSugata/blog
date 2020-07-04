@@ -120,7 +120,7 @@ def category(request, category_name=None, tag_slug=None):
 def postPerUser(request, username):
     # print(f'Request Details: {request}')
     user = User.objects.get(username=username) # get all the post specific to the user.
-    user_postList = user.post_set.all() # display last 10 posts.
+    user_postList = user.post_set.all().order_by('date_posted') # display last 10 posts.
     
     page = request.GET.get('page', 1)
     paginator = Paginator(user_postList, 5)
@@ -140,16 +140,14 @@ def postPerUser(request, username):
 
 def deletePost(request, pk):
     post = Post.objects.get(id=pk)
-    
+    print('hello1')
     if request.method == 'POST':
+            print('hello3')
             post.delete()
+            print('hello4')
             return redirect('blog-home')
     
-    context = {
-        'post':post
-    }
-
-    return render(request, 'blog/DeletePost.html',context=context)
+    return render(request, 'post/deletePost.html')
 
 def updatePost(request, pk):
     post = Post.objects.get(id=pk)
