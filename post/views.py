@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404, reverse, HttpResponseRedirect
 from .models import Post, Category, Comment
 from django.contrib.auth.models import User
-from .forms import CreatePost, CommentForm
+from .forms import CreatePost, CommentForm, UpdateForm
 from django.contrib import messages
 from django.core.paginator import Paginator, Page, PageNotAnInteger, EmptyPage
 from taggit.models import Tag
@@ -119,7 +119,7 @@ def category(request, category_name=None, tag_slug=None):
 
 def postPerUser(request, username):
     # print(f'Request Details: {request}')
-    user = User.objects.get(username=username) # get all the post specific to th user.
+    user = User.objects.get(username=username) # get all the post specific to the user.
     user_postList = user.post_set.all() # display last 10 posts.
     
     page = request.GET.get('page', 1)
@@ -151,3 +151,22 @@ def deletePost(request, pk):
 
     return render(request, 'blog/DeletePost.html',context=context)
 
+def updatePost(request, pk):
+    post = Post.objects.get(id=pk)
+
+    if request.method == 'POST':
+        if request.user == post.author:
+            form = UpdateForm(request.POST, instance=post)
+            if form.is_valid():
+                form.save()
+                return redirect('post-detail', pk=pk)
+        else:
+            print("You are not authorized!")
+    else:
+        form = UpdateForm(instance=post)
+
+    context = {
+        'form':form
+    }
+
+    return render(request, 'post/UpdatePost.html',context=context)
