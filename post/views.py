@@ -9,11 +9,11 @@ from taggit.models import Tag
 
 def home(request): # Home page of the website.
     post_list = Post.objects.all().order_by('-date_posted') # To display all the post in desc order.
-    categories = Category.objects.all()
-    tags = Post.tag.most_common()[:6]
+    categories = Category.objects.all() # getting all the objects of categories.
+    tags = Post.tag.most_common()[:6] # getting the 6 most common post tags.
     
     page = request.GET.get('page', 1)
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 3) # creating a Paginator object. Each page will consist of 3 pages.
     
     try:
         posts = paginator.page(page)
@@ -118,7 +118,7 @@ def category(request, category_name=None, tag_slug=None):
     return render(request,'post/CategoryWisePost.html',context=context)
 
 def postPerUser(request, username):
-    # print(f'Request Details: {request}')
+
     user = User.objects.get(username=username) # get all the post specific to the user.
     user_postList = user.post_set.all().order_by('date_posted') # display last 10 posts.
     
@@ -139,17 +139,17 @@ def postPerUser(request, username):
     return render(request, 'post/postPerCategory.html', context=context)
 
 def deletePost(request, pk):
+    
     post = Post.objects.get(id=pk)
-    print('hello1')
+
     if request.method == 'POST':
-            print('hello3')
             post.delete()
-            print('hello4')
             return redirect('blog-home')
     
     return render(request, 'post/deletePost.html')
 
 def updatePost(request, pk):
+    
     post = Post.objects.get(id=pk)
 
     if request.method == 'POST':
