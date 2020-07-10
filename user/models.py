@@ -10,7 +10,13 @@ class Profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.CharField(blank=True, max_length=500)
     location = models.CharField(blank=True, max_length=50)
-    email = models.EmailField(unique=True, max_length=200)
+    email = models.EmailField(unique=True, max_length=200) # actually being used.
 
     def __str__(self):
         return f'Profile for {self.user.username}'
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()

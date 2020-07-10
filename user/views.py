@@ -1,43 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm, ProfileForm
+from .forms import SignUpForm
 # Create your views here.
 
-def SignUpView(request):
-    
+def signup(request):
     if request.method == 'POST':
-        
-        user_form = SignUpForm(data=request.POST)
-        profile_form = ProfileForm(data=request.POST)
-        print("hello1")
-        
-        if user_form.is_valid() and profile_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_profile = profile_form.save(commit=False)
-            print("hello2")
-            
-            new_profile.user = new_user
-            userName = new_user.username
-            password = new_user.password1
-            print(f'username: {userName} and password: {password}')
-            new_user.save(commit=True)
-            new_profile.save(commit=True)
-            user = authenticate(username = userName, password = password)
-            print(f'user: {user}')
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db() # load the profile instance created by the signal
+            user.profile.email = form.cleaned_data.get('email')
+            user.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            print(f'Username: {username}, Password: {password}')
+            user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('blog-home')
-    
     else:
-        
-        user_form = SignUpForm()
-        profile_form = ProfileForm()
+        form = SignUpForm()
     
-    context = {
-        'user_form': user_form, 
-        'profile_form': profile_form,
-    }
-
-    return render(request, 'user/signup.html', context=context)
+    return render(request, 'user/signup.html', {'form': form})
 
 def loginView(request):
     
