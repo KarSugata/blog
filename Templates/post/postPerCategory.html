@@ -6,14 +6,15 @@
 
 		<h2>Hey {{ request.user.first_name|capfirst }}!</h2> 
 					
-		<p class="lead">Lorem ipsum Nisi enim est proident est magna occaecat 
+		<!--p class="lead">Lorem ipsum Nisi enim est proident est magna occaecat 
         dolore proident eu ex sunt consectetur consectetur dolore enim nisi
         exercitation adipisicing magna culpa commodo deserunt ut do Ut occaecat. 
         Lorem ipsum Veniam consequat quis.
-        </p>					
+        </p-->					
 	
 		<div class="row archive-list">
 			<div class="twelve columns">
+            {% if post %}
 				<h4>Posts you have made.</h4>	
 				<ul>
                             {% for post in user_post %}
@@ -23,6 +24,9 @@
                             {% endfor %}
                 </ul>							
 			</div>
+            {% else %}
+                <h4>You have no post.</h4>
+            {% endif %}
 		</div> <!-- end row -->			      	
 	
 	</section> <!-- End page -->
