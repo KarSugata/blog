@@ -25,7 +25,7 @@
                         <a href="{% url 'blog-home' %}">Home</a>
                      </li>
                      
-                     <li><a href="#">About Us</a></li>
+                     <!--li><a href="#">About Us</a></li-->
                   
                      {% if request.user.is_authenticated %} 
                         <li class="has-children">
@@ -41,7 +41,7 @@
                         
                         </li>
                      {% else %}
-                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                        <li><a href="{% url 'signup' %}" target="_blank">Sign Up</a></li>
                         <li><a href="{% url 'login' %}">Login</a></li>
                      {% endif %}        
                         
